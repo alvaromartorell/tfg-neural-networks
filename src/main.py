@@ -59,36 +59,26 @@ X = np.vstack(df.apply(encode_row, axis=1).values)
 y = df['action'].values
 
 
-print("\n=== EJEMPLO DE MANOS CODIFICADAS ===")
-print(f"Tamaño de los vectores: {len(X[0])}")
-for ejemplo_idx in range(0,15):
-    print("Acción original:", y[ejemplo_idx])
-    print("Vector codificado:", X[ejemplo_idx][:])
-
-
-
-#print(f"Vector de entrada: shape={X.shape}")
-
 # === 5. Entrenar y evaluar modelo ===
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-#model = MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=500, random_state=42)
+model = MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=500, random_state=42)
 
 print("Realizando validación cruzada (5-fold)...")
-#scores = cross_val_score(model, X_train, y_train, cv=5)
-#print("Accuracy medio validación cruzada:", scores.mean())
-#print("Accuracies individuales:", scores)
+scores = cross_val_score(model, X_train, y_train, cv=5)
+print("Accuracy medio validación cruzada:", scores.mean())
+print("Accuracies individuales:", scores)
 
 
 print("Entrenando red neuronal...")
-#model.fit(X_train, y_train)
+model.fit(X_train, y_train)
 
 print("Evaluando el modelo...")
-#y_pred = model.predict(X_test)
-#print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
-#print(classification_report(y_test, y_pred))
+y_pred = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
+print(classification_report(y_test, y_pred))
 
 
 action_to_int = {
@@ -99,13 +89,13 @@ action_to_int = {
     'raise': 4
 }
 
-#y_test_int = [action_to_int[y] for y in y_test]
-#y_pred_int = [action_to_int[y] for y in y_pred]
-#cm = confusion_matrix(y_test_int, y_pred_int, labels=[0, 1, 2, 3, 4])
-#disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-#                              display_labels=['fold', 'check', 'call', 'bet', 'raise'])
-#disp.plot(cmap='Blues', xticks_rotation=45)
-#plt.title('Matriz de confusión')
-#plt.tight_layout()
-#plt.savefig("confusion_matrix.png", dpi=300)
-#plt.show()
+y_test_int = [action_to_int[y] for y in y_test]
+y_pred_int = [action_to_int[y] for y in y_pred]
+cm = confusion_matrix(y_test_int, y_pred_int, labels=[0, 1, 2, 3, 4])
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                              display_labels=['fold', 'check', 'call', 'bet', 'raise'])
+disp.plot(cmap='Blues', xticks_rotation=45)
+plt.title('Matriz de confusión')
+plt.tight_layout()
+plt.savefig("confusion_matrix.png", dpi=300)
+plt.show()
