@@ -104,7 +104,6 @@ These results suggest that relatively simple neural architectures can effectivel
 .
 ├── src/                # Source code
 ├── docs/               # Bachelor's thesis
-├── figures/            # Images used in the README and thesis
 ├── README.md
 ```
 
